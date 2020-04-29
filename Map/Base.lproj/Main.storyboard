@@ -17,6 +17,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="nND-fj-JKy"/>
                     </view>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="segueToMap" id="Tue-EU-4z0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXu-Hy-txl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -25,7 +28,7 @@
         <!--Map View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MapViewController" customModule="Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="MapViewController" customModule="Map" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -46,6 +49,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="gZc-dW-bNJ"/>
                     <connections>
                         <outlet property="mapView" destination="1y1-0T-8LX" id="6Bw-OO-boH"/>
                     </connections>
@@ -57,7 +61,7 @@
         <!--Search View Controller-->
         <scene sceneID="kFj-eH-YVJ">
             <objects>
-                <viewController storyboardIdentifier="SearchViewController" id="Eby-ZM-sAi" customClass="SearchViewController" customModule="Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchViewController" modalPresentationStyle="fullScreen" id="Eby-ZM-sAi" customClass="SearchViewController" customModule="Map" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="3nz-Ao-gDv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -182,6 +186,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="TyA-BP-TPf"/>
                     </view>
+                    <navigationItem key="navigationItem" id="kka-hu-k0S"/>
                     <connections>
                         <outlet property="firstPreviewView" destination="LUv-Z5-lEg" id="SBK-89-bIy"/>
                         <outlet property="searchBoxContainerView" destination="1b9-lu-d7d" id="2Bu-2x-hC6"/>

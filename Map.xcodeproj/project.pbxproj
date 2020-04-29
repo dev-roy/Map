@@ -17,6 +17,9 @@
 		338EC2AF245609B800B6AEEE /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338EC2AE245609B800B6AEEE /* SearchResultCell.swift */; };
 		33E113E92459DC6D0029EAF8 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E113E82459DC6D0029EAF8 /* AuthenticationViewController.swift */; };
 		33E113EC2459E5A30029EAF8 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33E113EA2459DD290029EAF8 /* LocalAuthentication.framework */; };
+		33E113EE245A0B0D0029EAF8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E113ED245A0B0D0029EAF8 /* Location.swift */; };
+		33E113F1245A0BC80029EAF8 /* LocationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E113F0245A0BC80029EAF8 /* LocationAPI.swift */; };
+		33E113F3245A0ECD0029EAF8 /* PersistencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E113F2245A0ECD0029EAF8 /* PersistencyManager.swift */; };
 		42EFE67E51ED648948834D64 /* Pods_Map.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6937E9A8505D2CCB9FF3002 /* Pods_Map.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +36,9 @@
 		338EC2AE245609B800B6AEEE /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		33E113E82459DC6D0029EAF8 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		33E113EA2459DD290029EAF8 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		33E113ED245A0B0D0029EAF8 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		33E113F0245A0BC80029EAF8 /* LocationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAPI.swift; sourceTree = "<group>"; };
+		33E113F2245A0ECD0029EAF8 /* PersistencyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistencyManager.swift; sourceTree = "<group>"; };
 		8453316E6E8174A2B165EAAE /* Pods-Map.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Map.release.xcconfig"; path = "Target Support Files/Pods-Map/Pods-Map.release.xcconfig"; sourceTree = "<group>"; };
 		D1571583EEA33AD6D36A4EDB /* Pods-Map.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Map.debug.xcconfig"; path = "Target Support Files/Pods-Map/Pods-Map.debug.xcconfig"; sourceTree = "<group>"; };
 		D6937E9A8505D2CCB9FF3002 /* Pods_Map.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Map.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +81,7 @@
 				338EC2B024560C9500B6AEEE /* Model */,
 				338EC2B124560C9C00B6AEEE /* View */,
 				338EC2B224560CA400B6AEEE /* Controller */,
+				33E113EF245A0BB20029EAF8 /* API */,
 				338EC298245601EC00B6AEEE /* AppDelegate.swift */,
 				338EC29A245601EC00B6AEEE /* SceneDelegate.swift */,
 				338EC29E245601EC00B6AEEE /* Main.storyboard */,
@@ -88,6 +95,7 @@
 		338EC2B024560C9500B6AEEE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				33E113ED245A0B0D0029EAF8 /* Location.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -103,11 +111,20 @@
 		338EC2B224560CA400B6AEEE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				33E113E82459DC6D0029EAF8 /* AuthenticationViewController.swift */,
 				338EC29C245601EC00B6AEEE /* MapViewController.swift */,
 				338EC2AC245607EB00B6AEEE /* SearchViewController.swift */,
-				33E113E82459DC6D0029EAF8 /* AuthenticationViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		33E113EF245A0BB20029EAF8 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				33E113F0245A0BC80029EAF8 /* LocationAPI.swift */,
+				33E113F2245A0ECD0029EAF8 /* PersistencyManager.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		934C3FC32315200A11DEE9F7 /* Frameworks */ = {
@@ -247,8 +264,11 @@
 				338EC299245601EC00B6AEEE /* AppDelegate.swift in Sources */,
 				338EC2AD245607EB00B6AEEE /* SearchViewController.swift in Sources */,
 				338EC29B245601EC00B6AEEE /* SceneDelegate.swift in Sources */,
+				33E113F3245A0ECD0029EAF8 /* PersistencyManager.swift in Sources */,
 				33E113E92459DC6D0029EAF8 /* AuthenticationViewController.swift in Sources */,
 				338EC2AF245609B800B6AEEE /* SearchResultCell.swift in Sources */,
+				33E113EE245A0B0D0029EAF8 /* Location.swift in Sources */,
+				33E113F1245A0BC80029EAF8 /* LocationAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,13 +2,15 @@ import UIKit
 import LocalAuthentication
 
 class AuthenticationViewController: UIViewController {
-
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        authenticationWithTouchID()
+        authenticationWithBiometrics()
     }
     
-    func authenticationWithTouchID() {
+    // MARK: - Init
+    func authenticationWithBiometrics() {
         let localAuthenticationContext = LAContext()
         localAuthenticationContext.localizedFallbackTitle = "Please use your Passcode"
         var authorizationError: NSError?
@@ -20,18 +22,11 @@ class AuthenticationViewController: UIViewController {
                 
                 if success {
                     DispatchQueue.main.async() {
-                        let alert = UIAlertController(title: "Success", message: "Authenticated succesfully!", preferredStyle: UIAlertController.Style.alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
+                        self.performSegue(withIdentifier: "segueToMap", sender: self)
                     }
-                    
                 } else {
-                    // Failed to authenticate
-                    guard let error = evaluateError else {
-                        return
-                    }
+                    guard let error = evaluateError else { return }
                     print(error)
-                
                 }
             }
         } else {

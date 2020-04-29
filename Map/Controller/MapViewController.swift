@@ -9,6 +9,7 @@
 import UIKit
 import PullUpController
 import MapKit
+import CoreLocation
 
 class MapViewController: UIViewController {
     // MARK: - IBOutlets
@@ -18,12 +19,20 @@ class MapViewController: UIViewController {
     private let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear)
     private var searchViewController: SearchViewController!
     private var originalPullUpControllerViewSize: CGSize = .zero
+    private var locationManager = CLLocationManager()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
         mapView.addGestureRecognizer(longTapGesture)
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
         setUpVisualBlurEffectView()
         animator.addAnimations {
             self.visualEffectView.effect = UIBlurEffect(style: .regular)
@@ -88,7 +97,7 @@ class MapViewController: UIViewController {
 // MARK: - Extensions
 
 // MARK: - MapView methods
-extension MapViewController: MKMapViewDelegate{
+extension MapViewController: MKMapViewDelegate {
 
 func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
     guard annotation is MKPointAnnotation else { print("no mkpointannotaions"); return nil }
@@ -120,3 +129,11 @@ func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, callou
   }
 }
 
+// MARK: CoreLocation Methods
+extension MapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+           let locValue: CLLocationCoordinate2D = manager.location!.coordinate
+           locationManager.stopUpdatingLocation()
+        zoom(to: locValue)
+       }
+}
