@@ -53,7 +53,6 @@ class SearchViewController: PullUpController {
         super.viewDidLoad()
         portraitSize = CGSize(width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
                               height: secondPreviewView.frame.maxY)
-        landscapeFrame = CGRect(x: 5, y: 50, width: 280, height: 300)
         tableView.attach(to: self)
         locations = LocationAPI.shared.getLocations()
     }
@@ -64,15 +63,10 @@ class SearchViewController: PullUpController {
     }
     
     // MARK: - PullUpController
-    override func pullUpControllerDidMove(to stickyPoint: CGFloat) {
-        let mapVC = MapViewController()
-        mapVC.pullUpControllerValueChanged(height: stickyPoint)
-    }
-    
     override var pullUpControllerPreferredSize: CGSize {
         return portraitSize
     }
-    
+
     override var pullUpControllerPreferredLandscapeFrame: CGRect {
         return landscapeFrame
     }

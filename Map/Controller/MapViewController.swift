@@ -12,13 +12,12 @@ import MapKit
 import CoreLocation
 
 class MapViewController: UIViewController {
+    
     // MARK: - IBOutlets
     @IBOutlet weak var mapView: MKMapView!
+    
      // MARK: - Properties
-    private let visualEffectView = UIVisualEffectView(effect: nil)
-    private let animator = UIViewPropertyAnimator(duration: 0.5, curve: .linear)
     private var searchViewController: SearchViewController!
-    private var originalPullUpControllerViewSize: CGSize = .zero
     private var locationManager = CLLocationManager()
     
     // MARK: - Lifecycle
@@ -33,38 +32,25 @@ class MapViewController: UIViewController {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
-        setUpVisualBlurEffectView()
-        animator.addAnimations {
-            self.visualEffectView.effect = UIBlurEffect(style: .regular)
-        }
-        addPullUpController(animated: true)
+        addSearchViewController(animated: true)
     }
     
     // MARK: - Init
-    private func addPullUpController(animated: Bool) {
-        let pullUpController = makeSearchViewControllerIfNeeded()
-        _ = pullUpController.view
-        addPullUpController(pullUpController,
-                            initialStickyPointOffset: pullUpController.initialPointOffset,
+    private func addSearchViewController(animated: Bool) {
+        let searchViewController = makeSearchViewControllerIfNeeded()
+        _ = searchViewController.view
+        addPullUpController(searchViewController,
+                            initialStickyPointOffset: searchViewController.initialPointOffset,
                             animated: animated)
     }
     
     private func makeSearchViewControllerIfNeeded() -> SearchViewController {
-        let currentPullUpController = children
+        let searchViewController = children
             .filter({ $0 is SearchViewController })
             .first as? SearchViewController
-        let pullUpController: SearchViewController = currentPullUpController ?? UIStoryboard(name: "Main",bundle: nil).instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+        let pullUpController: SearchViewController = searchViewController ?? UIStoryboard(name: "Main",bundle: nil).instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
         pullUpController.delegate = self
-        if originalPullUpControllerViewSize == .zero {
-            originalPullUpControllerViewSize = pullUpController.view.bounds.size
-        }
         return pullUpController
-    }
-    
-    private func setUpVisualBlurEffectView() {
-        view.addSubview(visualEffectView)
-        visualEffectView.frame = view.frame
-        visualEffectView.isUserInteractionEnabled = false
     }
     
     // MARK: - Handlers
@@ -88,10 +74,6 @@ class MapViewController: UIViewController {
         let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         let region = MKCoordinateRegion(center: location, span: span)
         mapView.setRegion(region, animated: true)
-    }
-    
-    func pullUpControllerValueChanged(height: CGFloat) {
-        animator.fractionComplete = 516.0
     }
     
     func getCoordinateFrom(address: String, completion: @escaping(_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
