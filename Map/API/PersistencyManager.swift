@@ -16,7 +16,6 @@ final class PersistencyManager {
     // MARK: - Init
     init() {
         let rome = Location(title: "Rome", location:  CLLocationCoordinate2D(latitude: 41.9004041, longitude: 12.4432921))
-        
         let milan = Location(title: "Milan", location: CLLocationCoordinate2D(latitude: 45.4625319, longitude: 9.1574741))
         let turin = Location(title: "Turin", location: CLLocationCoordinate2D(latitude: 45.0705805, longitude: 7.6593106))
         let london = Location(title: "London", location: CLLocationCoordinate2D(latitude: 51.5287718, longitude: -0.2416817))

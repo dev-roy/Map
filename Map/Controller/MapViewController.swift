@@ -54,6 +54,7 @@ class MapViewController: UIViewController {
             .filter({ $0 is SearchViewController })
             .first as? SearchViewController
         let pullUpController: SearchViewController = currentPullUpController ?? UIStoryboard(name: "Main",bundle: nil).instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+        pullUpController.delegate = self
         if originalPullUpControllerViewSize == .zero {
             originalPullUpControllerViewSize = pullUpController.view.bounds.size
         }
@@ -91,6 +92,10 @@ class MapViewController: UIViewController {
     
     func pullUpControllerValueChanged(height: CGFloat) {
         animator.fractionComplete = 516.0
+    }
+    
+    func getCoordinateFrom(address: String, completion: @escaping(_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
+        CLGeocoder().geocodeAddressString(address) { completion($0?.first?.location?.coordinate, $1) }
     }
 }
 
@@ -132,8 +137,32 @@ func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, callou
 // MARK: CoreLocation Methods
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-           let locValue: CLLocationCoordinate2D = manager.location!.coordinate
-           locationManager.stopUpdatingLocation()
-        zoom(to: locValue)
-       }
+        let coordinates: CLLocationCoordinate2D = manager.location!.coordinate
+        locationManager.stopUpdatingLocation()
+        zoom(to: coordinates)
+    }
+}
+
+extension MapViewController: SearchCountry {
+    func search(countryName: String) {
+        getCoordinateFrom(address: countryName) { (coordinates, error) in
+            switch (coordinates, error) {
+            // Obtained coordinates
+            case (_, nil):
+                let searchVC = self.makeSearchViewControllerIfNeeded()
+                self.zoom(to: coordinates!)
+                searchVC.pullUpControllerMoveToVisiblePoint(searchVC.initialPointOffset, animated: true, completion: nil)
+            // Error
+            case (nil, _):
+                print(error)
+                let ac = UIAlertController(title: "No results found", message: "Your query did not match any results.", preferredStyle: .alert)
+                       ac.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(ac, animated: true)
+            default:
+                break
+            }
+        }
+    }
+    
+
 }

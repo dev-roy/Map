@@ -10,6 +10,10 @@ import UIKit
 import MapKit
 import PullUpController
 
+protocol SearchCountry {
+    func search(countryName: String)
+}
+
 class SearchViewController: PullUpController {
     
     // MARK: - IBOutlets
@@ -38,9 +42,11 @@ class SearchViewController: PullUpController {
             return pullUpControllerPreferredSize.height
         }
     }
-    private var locations = [(title: String, location: CLLocationCoordinate2D)]()
-    public var portraitSize: CGSize = .zero
-    public var landscapeFrame: CGRect = .zero
+    private var locations = [Location]()
+    private var portraitSize: CGSize = .zero
+    private var landscapeFrame: CGRect = .zero
+    var delegate: SearchCountry?
+    
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -49,7 +55,7 @@ class SearchViewController: PullUpController {
                               height: secondPreviewView.frame.maxY)
         landscapeFrame = CGRect(x: 5, y: 50, width: 280, height: 300)
         tableView.attach(to: self)
-        setupDataSource()
+        locations = LocationAPI.shared.getLocations()
     }
 
     override func viewDidLayoutSubviews() {
@@ -57,34 +63,12 @@ class SearchViewController: PullUpController {
         view.layer.cornerRadius = 12
     }
     
-    // MARK: - Init
+    // MARK: - PullUpController
     override func pullUpControllerDidMove(to stickyPoint: CGFloat) {
         let mapVC = MapViewController()
         mapVC.pullUpControllerValueChanged(height: stickyPoint)
     }
     
-    private func setupDataSource() {
-        locations.append(("Rome", CLLocationCoordinate2D(latitude: 41.9004041, longitude: 12.4432921)))
-        locations.append(("Milan", CLLocationCoordinate2D(latitude: 45.4625319, longitude: 9.1574741)))
-        locations.append(("Turin", CLLocationCoordinate2D(latitude: 45.0705805, longitude: 7.6593106)))
-        locations.append(("London", CLLocationCoordinate2D(latitude: 51.5287718, longitude: -0.2416817)))
-        locations.append(("Paris", CLLocationCoordinate2D(latitude: 48.8589507, longitude: 2.2770201)))
-        locations.append(("Amsterdam", CLLocationCoordinate2D(latitude: 52.354775, longitude: 4.7585401)))
-        locations.append(("Dublin", CLLocationCoordinate2D(latitude: 53.3244431, longitude: -6.3857869)))
-        locations.append(("Reykjavik", CLLocationCoordinate2D(latitude: 64.1335484, longitude: -21.9224815)))
-        locations.append(("London", CLLocationCoordinate2D(latitude: 51.5287718, longitude: -0.2416817)))
-        locations.append(("Paris", CLLocationCoordinate2D(latitude: 48.8589507, longitude: 2.2770201)))
-        locations.append(("Amsterdam", CLLocationCoordinate2D(latitude: 52.354775, longitude: 4.7585401)))
-        locations.append(("Dublin", CLLocationCoordinate2D(latitude: 53.3244431, longitude: -6.3857869)))
-        locations.append(("Reykjavik", CLLocationCoordinate2D(latitude: 64.1335484, longitude: -21.9224815)))
-        locations.append(("London", CLLocationCoordinate2D(latitude: 51.5287718, longitude: -0.2416817)))
-        locations.append(("Paris", CLLocationCoordinate2D(latitude: 48.8589507, longitude: 2.2770201)))
-        locations.append(("Amsterdam", CLLocationCoordinate2D(latitude: 52.354775, longitude: 4.7585401)))
-        locations.append(("Dublin", CLLocationCoordinate2D(latitude: 53.3244431, longitude: -6.3857869)))
-        locations.append(("Reykjavik", CLLocationCoordinate2D(latitude: 64.1335484, longitude: -21.9224815)))
-    }
-    
-    // MARK: - PullUpController
     override var pullUpControllerPreferredSize: CGSize {
         return portraitSize
     }
@@ -139,6 +123,8 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
+        guard let query = searchBar.text else { return }
+        delegate?.search(countryName: query)
     }
 }
 
