@@ -1,0 +1,16 @@
+PODS:
+  - PullUpController (0.8.0)
+
+DEPENDENCIES:
+  - PullUpController
+
+SPEC REPOS:
+  trunk:
+    - PullUpController
+
+SPEC CHECKSUMS:
+  PullUpController: 2f7ccaa0f35b31b47e3efbe1854c7f781552b3c7
+
+PODFILE CHECKSUM: d42db57b3ea139ed8459bce05e3278d09dbbc52e
+
+COCOAPODS: 1.8.3
