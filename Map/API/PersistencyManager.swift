@@ -15,6 +15,7 @@ final class PersistencyManager {
     
     // MARK: - Init
     init() {
+        let enhanceit = Location(title: "Atlanta", location: CLLocationCoordinate2D(latitude: 33.909105, longitude: -84.48138357))
         let rome = Location(title: "Rome", location:  CLLocationCoordinate2D(latitude: 41.9004041, longitude: 12.4432921))
         let milan = Location(title: "Milan", location: CLLocationCoordinate2D(latitude: 45.4625319, longitude: 9.1574741))
         let turin = Location(title: "Turin", location: CLLocationCoordinate2D(latitude: 45.0705805, longitude: 7.6593106))
@@ -23,7 +24,7 @@ final class PersistencyManager {
         let amsterdam = Location(title: "Amsterdam", location: CLLocationCoordinate2D(latitude: 52.354775, longitude: 4.7585401))
         let dublin = Location(title: "Dublin", location: CLLocationCoordinate2D(latitude: 53.3244431, longitude: -6.3857869))
         let reykjavik = Location(title: "Reykjavik", location: CLLocationCoordinate2D(latitude: 64.1335484, longitude: -21.9224815))
-       locations = [rome, milan, turin, london, paris, amsterdam, dublin, reykjavik]
+       locations = [enhanceit, rome, milan, turin, london, paris, amsterdam, dublin, reykjavik]
     }
     
     // MARK: - Handlers

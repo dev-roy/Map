@@ -10,7 +10,7 @@
         <!--Authentication View Controller-->
         <scene sceneID="tRr-XP-caX">
             <objects>
-                <viewController id="E3G-AM-L0k" customClass="AuthenticationViewController" customModule="Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthenticationViewController" id="E3G-AM-L0k" customClass="AuthenticationViewController" customModule="Map" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qV3-Wm-1b7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -33,6 +33,7 @@ class MapViewController: UIViewController {
             locationManager.startUpdatingLocation()
         }
         addSearchViewController(animated: true)
+        
     }
     
     // MARK: - Init

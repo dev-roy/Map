@@ -44,8 +44,9 @@ class SearchViewController: PullUpController {
     }
     private var locations = [Location]() {
         didSet {
-            locations = LocationAPI.shared.getLocations()
-            print(locations.count, "1newadded")
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     private var portraitSize: CGSize = .zero
