@@ -63,11 +63,18 @@ class MapViewController: UIViewController {
     }
     
     private func addAnnotation(location: CLLocationCoordinate2D){
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = location
-            annotation.title = "Some Title"
-            annotation.subtitle = "Some Subtitle"
-            self.mapView.addAnnotation(annotation)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location
+        getAddressFrom(location: location) { (name, locality, error) in
+            if error == nil {
+                guard let name = name, let locality = locality else { return }
+                annotation.title = name
+                annotation.subtitle = locality
+            } else {
+                annotation.title = "Information Not Available"
+            }
+        }
+        self.mapView.addAnnotation(annotation)
     }
     
     func zoom(to location: CLLocationCoordinate2D) {
@@ -76,8 +83,13 @@ class MapViewController: UIViewController {
         mapView.setRegion(region, animated: true)
     }
     
-    func getCoordinateFrom(address: String, completion: @escaping(_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
+    func getCoordinateFrom(address: String, completion: @escaping(_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> ()) {
         CLGeocoder().geocodeAddressString(address) { completion($0?.first?.location?.coordinate, $1) }
+    }
+    
+    func getAddressFrom(location: CLLocationCoordinate2D, completion: @escaping(_ placeName: String?, _ placeLocality: String?, _ error: Error?) -> ()) {
+        CLGeocoder.init().reverseGeocodeLocation(CLLocation.init(latitude: location.latitude, longitude:location.longitude)) { completion($0?.first?.name, $0?.first?.locality, $1)
+        }
     }
 }
 
@@ -120,14 +132,15 @@ func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, callou
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coordinates: CLLocationCoordinate2D = manager.location!.coordinate
+        LocationAPI.shared.addLocation(location: Location(title: "Current Location", location: coordinates))
         locationManager.stopUpdatingLocation()
         zoom(to: coordinates)
     }
 }
 
-extension MapViewController: SearchCountry {
-    func search(countryName: String) {
-        getCoordinateFrom(address: countryName) { (coordinates, error) in
+extension MapViewController: SearchLocation {
+    func search(locationName: String) {
+        getCoordinateFrom(address: locationName) { (coordinates, error) in
             switch (coordinates, error) {
             // Obtained coordinates
             case (_, nil):
@@ -136,7 +149,6 @@ extension MapViewController: SearchCountry {
                 searchVC.pullUpControllerMoveToVisiblePoint(searchVC.initialPointOffset, animated: true, completion: nil)
             // Error
             case (nil, _):
-                print(error)
                 let ac = UIAlertController(title: "No results found", message: "Your query did not match any results.", preferredStyle: .alert)
                        ac.addAction(UIAlertAction(title: "OK", style: .default))
                 self.present(ac, animated: true)

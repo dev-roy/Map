@@ -19,4 +19,8 @@ final class LocationAPI {
     func getLocations() -> [Location] {
         persistencyManager.getLocations()
     }
+    
+    func addLocation(location: Location) {
+        persistencyManager.addLocation(location)
+    }
 }

@@ -10,8 +10,8 @@ import UIKit
 import MapKit
 import PullUpController
 
-protocol SearchCountry {
-    func search(countryName: String)
+protocol SearchLocation {
+    func search(locationName: String)
 }
 
 class SearchViewController: PullUpController {
@@ -42,10 +42,15 @@ class SearchViewController: PullUpController {
             return pullUpControllerPreferredSize.height
         }
     }
-    private var locations = [Location]()
+    private var locations = [Location]() {
+        didSet {
+            locations = LocationAPI.shared.getLocations()
+            print(locations.count, "1newadded")
+        }
+    }
     private var portraitSize: CGSize = .zero
     private var landscapeFrame: CGRect = .zero
-    var delegate: SearchCountry?
+    var delegate: SearchLocation?
     
     
     // MARK: - Lifecycle
@@ -55,6 +60,7 @@ class SearchViewController: PullUpController {
                               height: secondPreviewView.frame.maxY)
         tableView.attach(to: self)
         locations = LocationAPI.shared.getLocations()
+        print(locations.count, "locationcount")
     }
 
     override func viewDidLayoutSubviews() {
@@ -108,7 +114,6 @@ class SearchViewController: PullUpController {
 
 // MARK: - UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
-    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if let lastStickyPoint = pullUpControllerAllStickyPoints.last {
             pullUpControllerMoveToVisiblePoint(lastStickyPoint, animated: true, completion: nil)
@@ -118,12 +123,11 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
         guard let query = searchBar.text else { return }
-        delegate?.search(countryName: query)
+        delegate?.search(locationName: query)
     }
 }
 
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
-    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return locations.count
