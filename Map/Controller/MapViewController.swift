@@ -107,7 +107,7 @@ func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnota
     if pinView == nil {
         pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
         pinView!.canShowCallout = true
-        pinView!.rightCalloutAccessoryView = UIButton(type: .infoDark)
+        pinView!.rightCalloutAccessoryView = UIButton(type: .close)
         pinView!.pinTintColor = UIColor.black
     } else {
         pinView!.annotation = annotation
@@ -115,15 +115,9 @@ func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnota
     return pinView
 }
 
-func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-    print("tapped on pin ")
-}
-
 func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
     if control == view.rightCalloutAccessoryView {
-        if let doSomething = view.annotation?.title! {
-           print("do something")
-        }
+        view.removeFromSuperview()
     }
   }
 }
@@ -141,19 +135,14 @@ extension MapViewController: CLLocationManagerDelegate {
 extension MapViewController: SearchLocation {
     func search(locationName: String) {
         getCoordinateFrom(address: locationName) { (coordinates, error) in
-            switch (coordinates, error) {
-            // Obtained coordinates
-            case (_, nil):
+            if error == nil {
                 let searchVC = self.makeSearchViewControllerIfNeeded()
                 self.zoom(to: coordinates!)
                 searchVC.pullUpControllerMoveToVisiblePoint(searchVC.initialPointOffset, animated: true, completion: nil)
-            // Error
-            case (nil, _):
+            } else {
                 let ac = UIAlertController(title: "No results found", message: "Your query did not match any results.", preferredStyle: .alert)
-                       ac.addAction(UIAlertAction(title: "OK", style: .default))
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
                 self.present(ac, animated: true)
-            default:
-                break
             }
         }
     }
